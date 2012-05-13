@@ -1,0 +1,29 @@
+<div id="admin_p_blogpost">
+
+	<div class="center_heading">
+		Please Review The Post Before Submitting.
+	</div>
+	<br />
+	<p class="pblogpost_heading">
+		{BLOGPOSTTITLE}
+	</p>
+	<br />
+	<p class="pblogpost_content">
+		{BLOGPOSTBODY}
+	</p>
+	<br />
+	<div align="center">
+		{THUMBNAILCODE}
+	</div>
+	<div align="center">
+		<form action="newblogpost.php" method="POST">
+			<input type="text" value="{BLOGPOSTTITLE}" name="blogpost_title_back" hidden="hidden" id="blogpost_title" />
+			<textarea hidden="hidden" name="blogpost_body_back" id="blogpost_body_back">{BLOGPOSTBODYBACK}</textarea>
+			{PICTURECODE}
+			<input type="text" value="{BLOGPOSTBODY}" id="blogpost_body" hidden="hidden" />
+			<input type="submit" value="Go Back" name="admin_blogpost_back" />
+		</form>
+		{AJAXFIELDCODE}
+		<br />
+	</div>
+</div>

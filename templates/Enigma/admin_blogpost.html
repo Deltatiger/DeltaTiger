@@ -1,0 +1,26 @@
+<div id="admin_blogpost">
+	
+	<p class="admin_blogpost_header">
+		Enter The Blog Details.
+	</p>
+	<br />
+	<form class="admin_blogpost" method="POST" name="admin_blogpost" action ="pnewblogpost.php" enctype="multipart/form-data">
+		<ul>
+			<li>
+				<label for="blog_post_title"> Blog Post Title </label>
+				<input type="text" name="blog_post_title" id="blog_post_title" value="{BLOGPOSTTITLE}"/>
+			</li>
+			<li> 
+				<label for="blog_post_body"> Blog Post </label>
+				<textarea name="blog_post_body" cols = "50" rows="20" id="blog_post_body">{BLOGPOSTBODY}</textarea>
+			</li>
+			<li>
+				<label for="blog_post_picture"> Blog Picture </label>
+				<input type="file" name="blog_post_picture" id="blog_post_picture" />
+			</li>
+		</ul>
+		<div align="center" > 
+			<input type="submit" class="admin_blogpost_submit" value="Submit Post" name="blogpost_preview" />
+		</div>
+	</form>
+</div>

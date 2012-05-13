@@ -1,0 +1,344 @@
+/* 
+    Document   : enigma
+    Created on : Jan 28, 2012, 6:29:27 PM
+    Author     : Delta Inc.
+    Description:
+        This contains all the common stuff neccesary thourghout the site
+*/
+
+root { 
+    display: block;
+}
+
+*	{
+	margin: 0px;
+	padding: 0px;
+}
+
+body    {
+    background-image: url('/DeltaTiger/templates/Enigma/images/body_bg.jpg');
+    background-repeat: no-repeat;
+    
+}
+
+#header {
+    height: 153px;
+    margin-top: 20px;
+    text-align: center;
+    background-color: white;
+}
+
+#body   {
+    margin-left: 15%;
+    margin-right: 10%;
+    padding-left: 20px;
+    padding-top: 10px;
+    background-color: #FFFACD;
+    border-left: 3px;
+    border-left-color: black;
+    border-left-style: solid;
+	border-bottom: 1px solid black;
+}
+
+#footer  {
+    margin-left: 15%;
+    margin-right: 10%;
+    background-color: yellow;
+    height: 100px;
+    width: 75%;
+    border-bottom-left-radius: 1em;
+    border-bottom-right-radius: 1em;
+    font-size: 10px;
+    text-align: center;
+}
+
+.navbar {
+    height: 35px;
+    text-align: center;
+    background-image: url('/DeltaTiger/templates/Enigma/images/grad_navbar3.png');
+    background-repeat: repeat-x;
+    font-size: 20px;
+    font-family: "Verdana", Arial, sans-serif;
+    padding-left: 10%;
+    padding-top: 5px;
+}
+
+div.navbar ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+div.navbar li
+{
+    float: left;
+}
+
+div.navbar a
+{
+    display:block;
+    width:86px;
+}
+
+div.navbar a:link,div.navbar a:visited
+{
+    font-weight:bold;
+    color:#FFFFFF;
+    text-align:center;
+    padding:4px;
+    text-decoration:none;
+}
+
+div.navbar a:hover,div.navbar a:active
+{
+    background-image: url('/DeltaTiger/templates/Enigma/images/navbar_link_hover.png');
+    background-repeat: repeat-x;
+}
+
+/*
+ * These are things needed everywhere
+ */
+.center_heading	{
+	text-align: center;
+	font-size: 15px;
+	font-weight: bold;
+	border-bottom: 1px solid #000000;
+} 
+/*
+ *	These are used in root/blogpost.php
+ */
+
+.blogPost	{
+	margin: 20px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-o-border-radis: 10px;
+	border: 2px solid black;
+	height: 175px;
+	background: white;
+}
+
+.blogPost a:link	{
+	text-decoration: none;
+	background-image: url('');
+}
+
+.blogPostTitle	{
+	height: 25px;
+	padding: 3px;
+	width: 100%;
+	font-weight: bold;
+	font-size: 16px;
+	text-align: left;
+}
+
+.blogPostPictureThumb	{
+	width: 13%;
+	height: 100px;
+	float: left;
+	padding-left: 10px;
+	
+}
+
+.blogPostBody	{
+	font-size: 16px;
+	text-indent: 20px;
+	height: 125px;
+	overflow: hidden;
+}
+
+.blogPostTime	{
+	float: left;
+	font-size: 12px;
+	height: 20px;
+	width: 50%;
+	text-align: center;
+}
+
+.blogPostCommentCount	{
+	float: right;
+	font-size: 12px;
+	height: 20px;
+	width: 50%;
+	text-align: center;
+}
+
+.emptyBlog	{
+	text-align: center;
+	font-weight: bold;
+}
+/*
+ * These are used in blogpost.php for viewing a single blog in detail.
+ */
+.blogViewTitle	{
+	text-align: center;
+	height: 50px;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.blogViewImages	{
+	height: 110px;
+	padding: 5px;
+	margin: auto;
+	width: 20%;
+}
+
+.blogViewBody	{
+	font-size: 14px;
+	margin-top: 40px;
+	margin-bottom: 30px;
+	text-indent: 25px;
+	border-top: 1px;
+	border-top-style: solid;
+	border-top-color: blue;
+	padding-top: 20px;
+}
+
+.blogViewCommentCount	{
+	font-size: 14px;
+	width: 50%;
+	text-align: center;
+	float: left;
+	height: 20px;
+}	
+
+.blogViewTime	{
+	font-size: 14px;
+	width: 50%;
+	text-align: center;
+	float: right;
+	height: 20px;
+}
+
+/*
+ *	This is for ViewBlogImage.php
+ */
+ 
+.viewBlogImage	{
+	width: 800px;
+}
+/*
+ *	This is used in the login page.
+ */
+.loginBody	{
+	width: 60%;
+	margin: auto;
+	height: 300px;
+	margin-top: 50px;
+}
+
+.loginCenterHeading	{
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 25px;
+}
+
+.loginText	{
+	width: 50%;
+	text-align: center;
+	float: left;
+}
+
+.loginInput	{
+	width: 50%;
+	float: left;
+	padding-bottom: 10px;
+}
+
+.loginSubmit	{
+	width: 10%;
+	margin: auto;
+	margin-top: 100px;
+	
+}
+
+/*
+ *	These are used in the admin section.
+ */
+.adminMainBody	{
+	
+}
+
+/*
+ *	These are used in admin_blogpost
+ */
+
+#admin_blogpost	{
+	margin-left: 15%;
+    margin-right: 10%;
+    padding-left: 20px;
+    padding-top: 10px;
+    background-color: #FFFACD;
+}
+
+.admin_blogpost ul {
+    width:750px;
+    list-style-type:none;
+	list-style-position:outside;
+	margin:0px;
+	padding:0px;
+}
+.admin_blogpost li{
+	padding:12px;
+	border-bottom:1px solid #eee;
+	position:relative;
+}
+
+.admin_blogpost_header	{
+	text-align: center;
+	margin: 3px;
+	font-weight: bold;
+}
+
+.admin_blogpost label {
+	width:150px;
+	margin-top: 3px;
+	display:inline-block;
+	float:left;
+	padding:3px;
+}
+
+.admin_blogpost input {
+	height:30px;
+	width:220px;
+	padding:5px 8px;
+}
+
+.admin_blogpost textarea {
+	width : 500px;
+	padding : 8px;
+	font-family: "Times New Roman",Georgia,Serif;
+}
+
+.admin_blogpost_submit	{
+	margin: 10px;
+	height: 20px;
+}	
+
+.admin_blogpost input:focus, .admin_blogpost textarea:focus {
+	background: #fff;
+	border:1px solid #555;
+	box-shadow: 0 0 3px #aaa;
+	
+}
+
+.pblogpost_heading	{
+	font-weight: bold;
+	text-align: center;
+}
+
+.pblogpost_content {
+	text-align: left;
+	margin-left: 50px;
+}
+
+#admin_p_blogpost	{
+	margin-left: 15%;
+    margin-right: 10%;
+    padding-left: 10px;
+    padding-top: 10px;
+	padding-right: 10px;
+    background-color: #FFFACD;
+}
