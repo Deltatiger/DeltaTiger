@@ -30,5 +30,5 @@
 		'BLOGPOST'	=> $blogPost
 	));
     
-    $template->set_page_template('blog');
+    $template->set_page_template('blog', 'Blog Page');
 ?>

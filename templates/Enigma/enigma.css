@@ -77,7 +77,9 @@ div.navbar li
 div.navbar a
 {
     display:block;
-    width:86px;
+    width:100%;
+    padding: 25px;
+    margin-left: 10px;
 }
 
 div.navbar a:link,div.navbar a:visited
