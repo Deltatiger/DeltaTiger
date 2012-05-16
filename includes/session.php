@@ -12,15 +12,16 @@ class session {
     	
 	//Ok in the constructer we check if the session is set and update it accordingly.
 	function __construct()	{
-		session_start();
 		global $db;
+		$currentSessionId = $_SESSION['session_id'];
 		if(isset($_SESSION['session_id']) || isset($_COOKIE['cookie_id']))	{
 			if(isset($_SESSION['session_id']))	{
 				//Ok we got a session. So Lets check it and if less than 5 min lets unset it.
-				$sql = "SELECT `user_id`,`create_time`,`last_active_time`, `create_ip` FROM `{$db->return_DB_name()}`.`dt_session_info` WHERE `session_id` = '{$_SESSION['session_id']}'";
+				$currentSessionId = trim($_SESSION['session_id']);
+				$sql = "SELECT `user_id`,`create_time`,`last_active_time`, `create_ip` FROM `{$db->return_DB_name()}`.`dt_session_info` WHERE `session_id` = '{$currentSessionId}'";
 				$query = $db->query($sql);
 				$userIp = $_SERVER['REMOTE_ADDR'];
-				if(mysql_num_rows($query) < 1)	{
+				if(mysql_num_rows($query) <= 0)	{
 					//No session found. So lets unset it and create a new one.
 					$sessionId = $this->new_session_id();
 					$sessionCreateTime = time();
@@ -123,6 +124,7 @@ class session {
 			$this->userLoggedIn = 0;
 		}
 	}
+	
 	
 	public function userLogin ($userId , $setCookie)	{
 		//This logs the user in by setting the session and if required also the cookie

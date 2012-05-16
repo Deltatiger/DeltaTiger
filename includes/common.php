@@ -1,6 +1,5 @@
 <?php
-
-	//$ROOT_PATH = "/xampp/htdocs/DeltaTiger/";
+	session_start();
 	$ROOT_PATH = $_SERVER['DOCUMENT_ROOT'].'/DeltaTiger/';
 
 	include $ROOT_PATH.'includes/mydb.php';
@@ -26,7 +25,7 @@
 	include $ROOT_PATH.'includes/newtemplate.php';
 	$template = new template();
 	include $ROOT_PATH.'includes/cache.php';
-	include $ROOT_PATH.'includes/session.php';
+	include $ROOT_PATH.'includes/newsession.php';
 	$session = new session();
 	include $ROOT_PATH.'includes/user.php';
 	$user = new user();
