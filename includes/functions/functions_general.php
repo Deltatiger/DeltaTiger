@@ -94,6 +94,13 @@
 		return $randomString;
 	}
 	
+	function smd5($string)	{
+		//This function just creates the md5 first and then the sha1 of the given string.
+		$md5String = md5($string);
+		$sha1String = sha1($md5String);
+		return $sha1String;
+	}
+	
 	function get_usergroup_from_id ($user , $userIdProvided = 1)	{
 		//FIXME this seems to cause lot of problems. Fix is required in the user class
 		if($user == '0' || empty($user) || $user == 0)	{

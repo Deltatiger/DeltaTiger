@@ -29,7 +29,7 @@ This contains the nav bar icons to link to other pages
         <li> <a href ="index.php"> Index </a> </li>
         <li> <a href ="blog.php"> Blog </a> </li>
         <li> <a href ="projects.php"> Projects </a> </li>
-        <li> <a href ="#"> Test4 </a> </li>
+        <li> <a href ="login.php"> Login </a> </li>
     </ul>
 </div>
 <div id="body">
@@ -41,7 +41,7 @@ This contains the nav bar icons to link to other pages
     This page is the footer and the final template of the page.
 -->
 <div id="footer">
-    The Page Was Compiled on  18 : 51 : 35 20125 15-May-2012.
+    The Page Was Compiled on  12 : 55 : 46 20125 16-May-2012.
 </div>
 </body>
 </html>

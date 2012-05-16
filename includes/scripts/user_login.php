@@ -1,6 +1,6 @@
 <?php
 
-	include './common.php';
+	include '../common.php';
 	//This is used by AJAX to log the user in.
 	$userName = mysql_real_escape_string($_POST['username']);
 	$password = mysql_real_escape_string($_POST['password']);

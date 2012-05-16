@@ -29,14 +29,34 @@ This contains the nav bar icons to link to other pages
         <li> <a href ="login.php"> Login </a> </li>
     </ul>
 </div>
+
 <div id="body">
-	<?php echo (isset($this->templateVars['BLOGPOST'])) ? $this->templateVars['BLOGPOST'] : ''; ?>
+	<div class="loginBody">
+		<div class="loginCenterHeading"> Enter You Details </div>
+		<div class="loginText">
+			Username 
+		</div>
+		<div class="loginInput">
+			: &nbsp;&nbsp; <input type="text" name="username" id="login_username" />
+		</div>
+		<br />
+		<div class="loginText">
+			Password
+		</div>
+		<div class="loginInput">
+			: &nbsp;&nbsp; <input type="password" name="password" id="login_password" />
+		</div>
+		<div class="loginSubmit">
+			<input type="submit" value="Login" onClick="loginUser()" />
+		</div>
+	</div>
 </div>
+
 <!--
     This page is the footer and the final template of the page.
 -->
 <div id="footer">
-    The Page Was Compiled on  13 : 06 : 53 20125 16-May-2012.
+    The Page Was Compiled on  12 : 56 : 14 20125 16-May-2012.
 </div>
 </body>
 </html>

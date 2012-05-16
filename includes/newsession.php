@@ -1,7 +1,6 @@
 <?php
 	class session	{
-		//FIXME. Rewrite the session class again. Starting from Scratch.
-		private $userLoginStatus;
+		private $userLoginStatus = FALSE;
 
 		function __construct(){
 			//Checks if the session is set and acts accordingly.
@@ -25,7 +24,7 @@
 							$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `user_id` = '0', `user_group` = '0', `create_time` = '{$currentTime}', `last_active_time` = '{$currentTime}', `create_ip` = '{$userCurrentIp}', `login_status` = '0' WHERE `session_id` = '{$sessionId}'";
 							$query = $db->query($sql);
 							$_SESSION['session_id'] = $newSessionId;
-							$this->userLoginStatus = 0;
+							$this->userLoginStatus = FALSE;
 						} else {
 							//Session is valid. Lets just check the Ip and be done with it.
 							$sessionMakeIp = $result->create_ip;
@@ -34,13 +33,13 @@
 								$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `last_active_time` = '{$currentTime}' WHERE `session_id` = '{$sessionId}'";
 								$query = $db->query($sql);
 								$_SESSION['session_id'] = $newSessionId;
-								$this->userLoginStatus = 1;
+								$this->userLoginStatus = $result->login_status;
 							} else {
 								//Ip's dont match. Lets unset the session and make a new one.
 								$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `user_id` = '0', `user_group` = '0', `create_time` = '{$currentTime}', `last_active_time` = '{$currentTime}', `create_ip` = '{$userCurrentIp}', `login_status` = '0' WHERE `session_id` = '{$sessionId}'";
 								$query = $db->query($sql);
 								$_SESSION['session_id'] = $newSessionId;
-								$this->userLoginStatus = 0;
+								$this->userLoginStatus = FALSE;
 							}
 						}
 					} else {
@@ -48,7 +47,7 @@
 						$sql = "INSERT INTO `{$db->return_DB_name()}`.`dt_session_info`(`session_id`,`user_id`,`user_group`,`create_time`,`last_active_time`,`create_ip`,`login_status`) VALUES ('{$newSessionId}', '0','0','{$currentTime}','{$currentTime}','{$userCurrentIp}', '0')";
 						$query = $db->query($sql);
 						$_SESSION['session_id'] = $newSessionId;
-						$this->userLoginStatus = 0;
+						$this->userLoginStatus = FALSE;
 					}
 				} else {
 					//COOKIE is set. check it up.
@@ -59,7 +58,7 @@
 				$sql = "INSERT INTO `{$db->return_DB_name()}`.`dt_session_info`(`session_id`,`user_id`,`user_group`,`create_time`,`last_active_time`,`create_ip`,`login_status`) VALUES ('{$newSessionId}', '0','0','{$currentTime}','{$currentTime}','{$userCurrentIp}', '0')";
 				$query = $db->query($sql);
 				$_SESSION['session_id'] = $newSessionId;
-				$this->userLoginStatus = 0;
+				$this->userLoginStatus = FALSE;
 			}
 		}
 		
@@ -78,7 +77,6 @@
 				$encrpytedString = sha1($stringToCrpyt);
 				$query = $db->query($sql);
 			}
-			
 			return $encrpytedString;
 		}
 		
@@ -94,6 +92,20 @@
 			$result = mysql_fetch_object($query);
 			return $result->user_id;
 			
+		}
+		
+		public function user_login($userId, $setCookie)	{
+			//Since we are updating the session data  we better change the session ID too.
+			global $db;
+			$userGroup = get_usergroup_from_id($userId);
+			$sessionId = $_SESSION['session_id'];
+			$newSessionId = $this->new_session_id();
+			$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `user_id` = '{$userId}', `user_group` = '{$userGroup}', `login_status` = '1' WHERE  `session_id` = '{$sessionId}'";
+			$query = $db->query($sql);
+			
+			if($setCookie == 1)	{
+				//TODO apply the set cookie process.
+			}
 		}
 	}
 ?>
