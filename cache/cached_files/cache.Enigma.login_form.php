@@ -37,14 +37,17 @@ This contains the nav bar icons to link to other pages
 			Username 
 		</div>
 		<div class="loginInput">
-			: &nbsp;&nbsp; <input type="text" name="username" id="login_username" />
+			: <input type="text" name="username" id="login_username" />
 		</div>
 		<br />
 		<div class="loginText">
 			Password
 		</div>
 		<div class="loginInput">
-			: &nbsp;&nbsp; <input type="password" name="password" id="login_password" />
+			: <input type="password" name="password" id="login_password" />
+		</div>
+		<div class="loginCookieSet">
+			<input type = "checkbox" name="cookieset" id="login_cookie_set"/> Stay Logged In ?.
 		</div>
 		<div class="loginSubmit">
 			<input type="submit" value="Login" onClick="loginUser()" />
@@ -56,7 +59,7 @@ This contains the nav bar icons to link to other pages
     This page is the footer and the final template of the page.
 -->
 <div id="footer">
-    The Page Was Compiled on  07 : 30 : 45 20125 17-May-2012.
+    The Page Was Compiled on  11 : 25 : 53 20125 17-May-2012.
 </div>
 </body>
 </html>
