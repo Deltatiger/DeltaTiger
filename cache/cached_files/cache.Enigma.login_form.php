@@ -32,7 +32,7 @@ This contains the nav bar icons to link to other pages
 
 <div id="body">
 	<div class="loginBody">
-		<div class="loginCenterHeading"> Enter You Details </div>
+		<div class="loginCenterHeading"> Enter Your Login Details </div>
 		<div class="loginText">
 			Username 
 		</div>
@@ -56,7 +56,7 @@ This contains the nav bar icons to link to other pages
     This page is the footer and the final template of the page.
 -->
 <div id="footer">
-    The Page Was Compiled on  12 : 56 : 14 20125 16-May-2012.
+    The Page Was Compiled on  07 : 30 : 45 20125 17-May-2012.
 </div>
 </body>
 </html>

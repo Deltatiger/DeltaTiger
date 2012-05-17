@@ -17,8 +17,7 @@ root {
 
 body    {
     background-image: url('/DeltaTiger/templates/Enigma/images/body_bg.jpg');
-    background-repeat: no-repeat;
-    
+    background-repeat: repeat-x;
 }
 
 #header {
