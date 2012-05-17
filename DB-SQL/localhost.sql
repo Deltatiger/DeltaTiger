@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 15, 2012 at 03:56 PM
+-- Generation Time: May 17, 2012 at 04:24 PM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -76,7 +76,8 @@ CREATE TABLE IF NOT EXISTS `dt_cache_info` (
 --
 
 INSERT INTO `dt_cache_info` (`cache_time`, `cache_page_name`) VALUES
-('1336712929', 'index');
+('1336712929', 'index'),
+('1337246753', 'login_form');
 
 -- --------------------------------------------------------
 
@@ -95,7 +96,8 @@ CREATE TABLE IF NOT EXISTS `dt_config` (
 
 INSERT INTO `dt_config` (`config_name`, `config_value`) VALUES
 ('site_on', '1'),
-('theme', 'Enigma');
+('theme', 'Enigma'),
+('Default User Group', 'Guest User');
 
 -- --------------------------------------------------------
 
@@ -110,6 +112,13 @@ CREATE TABLE IF NOT EXISTS `dt_cookie_info` (
   `cookie_id` text NOT NULL,
   `user_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `dt_cookie_info`
+--
+
+INSERT INTO `dt_cookie_info` (`set_time`, `user_agent`, `create_ip`, `cookie_id`, `user_id`) VALUES
+('1337264629', 'Default Browser', '::1', '905538d3dffef17bcf7057f3d62014df', 101);
 
 -- --------------------------------------------------------
 
@@ -169,10 +178,7 @@ CREATE TABLE IF NOT EXISTS `dt_session_info` (
 --
 
 INSERT INTO `dt_session_info` (`session_id`, `user_id`, `user_group`, `create_time`, `last_active_time`, `create_ip`, `login_status`) VALUES
-('e55091086a25a51cebf2d0640df078ddd3046a46', 0, 0, '1336891393', 1336891393, '::1', 0),
-('f90e0bad34c7d5f670592cf74de3daa23410b0f9', 0, 0, '1336891469', 1336891469, '::1', 0),
-('6a03a3471ddf7f3ff599d39621747e5824ff041b', 0, 0, '1336891618', 1336891618, '::1', 0),
-('3be8fcec0e8bfee8b0eec3c297d9bfe0c2f5bc3c', 0, 0, '1336891620', 1336891620, '::1', 0);
+('0febc137bac4569ec22ebe662e3ad2e4e9755bbe', 101, 0, '1337264614', 1337264632, '::1', 1);
 
 -- --------------------------------------------------------
 
@@ -210,7 +216,7 @@ CREATE TABLE IF NOT EXISTS `dt_user_info` (
 --
 
 INSERT INTO `dt_user_info` (`user_id`, `username`, `username_clean`, `password`, `create_time`, `user_group`, `user_email`) VALUES
-(101, 'DeltaTiger', 'deltatiger', '5d73be79d9e78af8dbed02f85bedd040', '', 0, '');
+(101, 'DeltaTiger', 'deltatiger', '20c6c8de8a68db4232e26b316dc4695204156354', '', 0, '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

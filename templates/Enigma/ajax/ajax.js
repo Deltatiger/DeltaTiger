@@ -33,10 +33,10 @@ function loginUser()	{
 		if(xmlhttp.readyState == 4 && xmlhttp.status == 200)    {
 			//Got to modify this peice of code to change the text color if wrong and stuff.
 			if(xmlhttp.responseText == 1)	{
-					alert('Login Succesfull. Redirecting to Index');
-					window.location = "./index.php";
-			}else {
-					alert(xmlhttp.responseText);
+				alert('Login verification succesful. Redirecting...');
+				window.location = './index.php';
+			} else {
+				alert('Username and password combination is wrong. Try again');
 			}
 		}
 	}

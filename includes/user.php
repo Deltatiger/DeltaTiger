@@ -28,19 +28,26 @@
 			}
 		}
 		
-		function log_user_in($username, $password)	{
+		function log_user_in($username, $password, $setCookie)	{
 			global $db;
 			$usernameClean = strtolower(mysql_real_escape_string(trim($username)));
 			$passwordClean = mysql_real_escape_string(trim($password));
 			$passwordMd5 = smd5($passwordClean);
 			$sql = "SELECT `user_id`,`password` FROM `{$db->return_DB_name()}`.`dt_user_info` WHERE `username_clean` = '{$usernameClean}'";
 			$query = $db->query($sql);
-			$result = mysql_fetch_object($query);
-			if($result->password == $passwordMd5)	{
-				//The password is a match.
-				global $session;
-				$userId = $result->user_id;
-				$session->user_login($userId, 0);
+			if(mysql_num_rows($query) > 0)	{
+				$result = mysql_fetch_object($query);
+				if($result->password == $passwordMd5)	{
+					//The password is a match.
+					global $session;
+					$userId = $result->user_id;
+					$session->user_login($userId, $setCookie);
+					return 1;
+				} else	{
+					return 0;
+				} 
+			} else {
+				return 0;
 			}
 		}
 		
