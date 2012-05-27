@@ -71,7 +71,7 @@
 		private function replace_conditions($fileContents)	{
 			//This function replaces all the conditions that are in the template file.
 			//The generel format is <!-- IF|ELSEIF (not) VARNAME && | || ... -->
-			preg_match_all('/<!--[ ]*(IF|ELSEIF)[ ]*([a-z]*?[ ]*[A-Z0-9_]*[ ]*?)*-->/', $fileContents, $allCondStrings);
+			preg_match_all("/<!--[ ]*(IF|ELSEIF)[ ]*([a-z]*?[ ]*[A-Z0-9_]*[ ]*?(== '[a-zA-Z0-9]*')*?)*-->/", $fileContents, $allCondStrings);
 			$condStrings = $allCondStrings[0];
 			foreach($condStrings as $condString)	{
 				//Now we got one single cond string in storage.
@@ -103,14 +103,22 @@
 							//This is a or condition. '||'
 							$condition .= ' || ';
 							break;
+						case '==':
+							$condition .= ' == ';
+							break;
 						default:
-							//Now this is a variable variable.
-							$condition .= '$this->templateVars[\''.$condArrayPart.'\']';
+							//Now this is a variable variable or a value for a condition
+							if(substr_count($condArrayPart, "'") > 0)	{
+								$condition .= $condArrayPart;
+							} else {
+								$condition .= '$this->templateVars[\''.$condArrayPart.'\']';
+							}
 					}
 				}
 				$condition.= ' ) { ?>';
 				$fileContents = str_replace($condString, $condition, $fileContents);
 			}
+			$fileContents = str_replace('<!-- ELSE -->', '<?php } else { ?>', $fileContents);
 			$fileContents = str_replace('<!-- ENDIF -->', '<?php } ?>', $fileContents);
 			return $fileContents;
 		}

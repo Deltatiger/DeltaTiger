@@ -15,7 +15,7 @@
 			if($session->return_user_login_status() == TRUE)	{
 				//The User is logged in. So we get the stuff from the session class.
 				$this->userId = $session->get_userId_from_session();
-				$this->userGroup = get_usergroup_from_id($this->userId);
+				$this->userGroup = $session->get_usergroup_from_session();
 				$this->userName = get_username_from_id($this->userId);
 			} else {
 				$this->userId = $this->userGroup = $this->userName = 0;

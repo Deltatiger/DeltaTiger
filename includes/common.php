@@ -22,10 +22,10 @@
 	}
 	//So the site is open. Lets set the vars for the required stuff
 	
-	include $ROOT_PATH.'includes/newtemplate.php';
+	include $ROOT_PATH.'includes/template.php';
 	$template = new template();
 	include $ROOT_PATH.'includes/cache.php';
-	include $ROOT_PATH.'includes/newsession.php';
+	include $ROOT_PATH.'includes/session.php';
 	$session = new session();
 	include $ROOT_PATH.'includes/user.php';
 	$user = new user();

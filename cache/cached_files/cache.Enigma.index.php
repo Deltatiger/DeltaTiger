@@ -34,14 +34,17 @@ This contains the nav bar icons to link to other pages
 </div>
 <div id="body">
     This is a body text.
-    <?php echo (isset($this->templateVars['TESTING'])) ? $this->templateVars['TESTING'] : ''; ?>
-    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <?php if($this->templateVars['USERLOGGEDIN'] ) { ?>
+    <p> This is a message for the logged in user </p>
+    <?php } else { ?>
+    <p> This is for non logged in people </p>
+    <?php } ?>
 </div>
 <!--
     This page is the footer and the final template of the page.
 -->
 <div id="footer">
-    The Page Was Compiled on  12 : 25 : 32 20125 27-May-2012.
+    The Page Was Compiled on  19 : 51 : 56 20125 27-May-2012.
 </div>
 </body>
 </html>

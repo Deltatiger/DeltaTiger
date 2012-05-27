@@ -5,7 +5,10 @@
 <!-- #INCLUDE navbar.html -->
 <div id="body">
     This is a body text.
-    {TESTING}
-    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <!-- IF USERLOGGEDIN -->
+    <p> This is a message for the logged in user </p>
+    <!-- ELSE -->
+    <p> This is for non logged in people </p>
+    <!-- ENDIF -->
 </div>
 <!-- #INCLUDE footer.html -->

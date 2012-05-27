@@ -102,7 +102,6 @@
 	}
 	
 	function get_usergroup_from_id ($user , $userIdProvided = 1)	{
-		//FIXME this seems to cause lot of problems. Fix is required in the user class
 		if($user == '0' || empty($user) || $user == 0)	{
 			return false;
 		}
