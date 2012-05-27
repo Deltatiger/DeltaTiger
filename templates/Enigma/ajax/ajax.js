@@ -36,7 +36,8 @@ function loginUser()	{
 				alert('Login verification succesful. Redirecting...');
 				window.location = './index.php';
 			} else {
-				alert('Username and password combination is wrong. Try again');
+				alert(xmlhttp.resposeText);
+				//alert('Username and password combination is wrong. Try again');
 			}
 		}
 	}

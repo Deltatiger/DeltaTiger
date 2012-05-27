@@ -1,233 +1,227 @@
 <?php
-	class session	{
-		private $userLoginStatus = FALSE;
-
-		function __construct(){
-			//Checks if the session is set and acts accordingly.
-			global $db;
-			$currentTime = time();
-			$newSessionId = $this->new_session_id();
-			$userCurrentIp = $_SERVER['REMOTE_ADDR'];
-						
-			if(isset($_SESSION['session_id']) || isset($_COOKIE['cookie_id']))	{
-				if(isset($_SESSION['session_id']))	{
-					//Now a session is set. Lets check if the session is valid.
-					$sessionId = $_SESSION['session_id'];
-					$sql = "SELECT * FROM `{$db->return_DB_name()}`.`dt_session_info` WHERE `session_id` = '{$sessionId}'";
-					$query = $db->query($sql);
-					if(mysql_num_rows($query) > 0)	{
-						//Session exists. Lets check it and then do what is needed.
-						$result = mysql_fetch_object($query);
-						$sessionMakeTime = $result->last_active_time;
-						if($currentTime - $sessionMakeTime >= 300)	{
-							//session is too old. Lets unset it.
-							$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `user_id` = '0', `user_group` = '0', `create_time` = '{$currentTime}', `last_active_time` = '{$currentTime}', `create_ip` = '{$userCurrentIp}', `login_status` = '0' WHERE `session_id` = '{$sessionId}'";
+	class session {
+	private $userLoginStatus = FALSE;
+	//FIXME. Need a new session class design that will fucking work.
+	
+	function __construct(){
+		/*
+		 * @description: This function checks if a cookie or a session is set and does the required action.
+		 */
+		global $db;
+		$newSessionId = $this->new_session_id();
+		$currentTime = time();
+		$currentIp = $_SERVER['REMOTE_ADDR'];
+		$currentBrowser = get_browser(null, true);
+		$currentBrowser = $currentBrowser['browser'];
+		
+		$sessionSet = isset($_SESSION['session_id']) ? TRUE : FALSE;
+		$cookieSet = isset($_COOKIE['cookie_id']) ? TRUE: FALSE;
+		
+		if($sessionSet == TRUE)	{
+			//A session is set. Lets check its validity.
+			$sql  = "SELECT `last_active_time` , `create_ip` , `last_browser` , `login_status` FROM `{$db->return_DB_name()}`.`dt_session_info` WHERE `session_id` = '{$_SESSION['session_id']}'";
+			$query = $db->query($sql);
+			if(mysql_num_rows($query) > 0)	{
+				//A session of the sesssion id was found. Lets update it.
+				$result = mysql_fetch_object($query);
+				//Check the time , ip and if usernot logged in check if cookie is set. Do the same when session is nto set.
+				$lastActiveTime = $result->last_active_time;
+				if($currentTime - $lastActiveTime <= 300)	{
+					//Its seems valid. Lets check the IP to be sure. Also the browser.
+					$userLastIp = $result->create_ip;
+					$userLastBrowser = $result->last_browser;
+					if($userLastIp == $currentIp && $userLastBrowser == $currentBrowser)	{
+						//The Ips and the Browsers match. So its an all go.
+						$userLoginStatus = $result->login_status;
+						if($userLoginStatus == '1')	{
+							//The session is fine. Lets update it.
+							$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `last_active_time` = '{$currentTime}' WHERE `session_id` = '{$_SESSION['session_id']}'";
 							$query = $db->query($sql);
-							$_SESSION['session_id'] = $newSessionId;
-							$this->userLoginStatus = FALSE;
+							$this->userLoginStatus = TRUE;
 						} else {
-							//Session is valid. Lets just check the Ip and be done with it.
-							$sessionMakeIp = $result->create_ip;
-							if($sessionMakeIp == $userCurrentIp)	{
-								//Ip's match. So lets update the session.
-								$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `last_active_time` = '{$currentTime}' WHERE `session_id` = '{$sessionId}'";
-								$query = $db->query($sql);
-								$_SESSION['session_id'] = $newSessionId;
-								$this->userLoginStatus = $result->login_status == '1' ? TRUE: FALSE;
-							} else {
-								//Ip's dont match. Lets unset the session and make a new one.
-								$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `user_id` = '0', `user_group` = '0', `create_time` = '{$currentTime}', `last_active_time` = '{$currentTime}', `create_ip` = '{$userCurrentIp}', `login_status` = '0' WHERE `session_id` = '{$sessionId}'";
-								$query = $db->query($sql);
-								$_SESSION['session_id'] = $newSessionId;
-								$this->userLoginStatus = FALSE;
-							}
-						}
-					} else {
-						//The session is not in the table. Lets give them a legit one.
-						$sql = "INSERT INTO `{$db->return_DB_name()}`.`dt_session_info`(`session_id`,`user_id`,`user_group`,`create_time`,`last_active_time`,`create_ip`,`login_status`) VALUES ('{$newSessionId}', '0','0','{$currentTime}','{$currentTime}','{$userCurrentIp}', '0')";
-						$query = $db->query($sql);
-						$_SESSION['session_id'] = $newSessionId;
-						$this->userLoginStatus = FALSE;
-					}
-				} else {
-					//Cookie is set. There are only few things to check. Lets start.
-					$cookieId = $_COOKIE['cookie_id'];
-					$sql = "SELECT `set_time`,`user_agent`,`create_ip`,`user_id` FROM `{$db->return_DB_name()}`.`dt_cookie_info` WHERE `cookie_id` = '{$cookieId}'";
-					$query = $db->query($sql);
-					if(mysql_num_rows($query) > 0)	{
-						//First lets check if the user agent and IP match. Else its a waste to check time.
-						$result = mysql_fetch_object($query);
-						
-						$cookieIp = $result->create_ip;
-						$cookieUserAgent = $result->user_agent;
-						$userId = $result->user_id;
-						
-						$userIp = $_SERVER['REMOTE_ADDR'];
-						$browser = get_browser(null , ture);
-						$userAgent = $browser['browser'];
-						$currentTime = time();
-						$newSessionId = $this->new_session_id();
-						
-						if($userAgent = $cookieUserAgent && $userIp == $cookieIp)	{
-							//Seems legit. Lets check the time and go accordingly.
-							$cookieMkTime = $result->set_time;
-							if($currentTime = $cookieMkTime <= 604800)	{
-								//Seems the cookie is valid. Lets go ahead and set up the proper session.
-								$userGroup = get_usergroup_from_id($userId);
-								//Lets check if the user already has a session set. If so lets just update it with the stuff.(?)
-								$sql = "SELECT `session_id`,`create_ip` FROM `{$db->return_DB_name()}`.`dt_session_info` WHERE `user_id` = '{$userId}'";
-								$query = $db->query($sql);
-								if(mysql_num_rows($query) > 0)	{
-									//Lets just keep note whether the session is set or not.
-									$sessionSet = FALSE;
-									while ($row = mysql_fetch_object($query))	{
-										if($result->create_ip == $cookieIp)	{
-											//So the cookie and the session have the same Ip. Its an exact match. Lets log them in
-											$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `user_id` = '{$userId}', `user_group` = '{$userGroup}', `last_active_time` = '{$currentTime}', `login_status` = '1' WHERE `session_id` = '{$result->session_id}'";
-											$query = $db->query($sql);
-											$sessionSet = TRUE;
-										}
-									}
-									if($sessionSet == FALSE)	{
-										//Seems none of the IP's matched. Lets create a new session for them.
-										$sql = "INSERT INTO `{$db->return_DB_name()}`.`dt_session_info`(`session_id`,`user_id`,`user_group`,`create_time`,`last_active_time`,`create_ip`,`login_status`) VALUES ('{$newSessionId}','{$userId}','{$userGroup}','{$currentTime}','{$currentTime}','{$userIp}','1')";
-										$db->query($sql);
-									}
-								} else {
-									//No sessions set for the user. Lets set a new one.
-									$sql = "INSERT INTO `{$db->return_DB_name()}`.`dt_session_info`(`session_id`,`user_id`,`user_group`,`create_time`,`last_active_time`,`create_ip`,`login_status`) VALUES ('{$newSessionId}','{$userId}','{$userGroup}','{$currentTime}','{$currentTime}','{$userIp}','1')";
-									$db->query($sql);
-								}
-								$this->userLoginStatus = TRUE;
-								$_SESSION['session_id'] = $newSessionId;
-							}  else {
-								//Cookie is past due time.
-								//TODO only ask the user the password and not the username.
-								//No session is set and the cookie is overdue. Lets check for a DB entry and modify the session record if found
-								$sql = "SELECT `session_id` FROM `{$db->return_DB_name()}`.`dt_session_info` WHERE `user_id` = '{$userId}' AND `create_ip` = '{$cookieIp}'";
+							//The user is not logged in. Lets check if a cookie is set or just update last_Active_time
+							if($cookieSet === TRUE)	{
+								//A cookie is set. Lets check the cookies validity and then do the needy.
+								$cookieId = $_COOKIE['cookie_id'];
+								$sql = "SELECT `last_active_time`,`user_agent`,`create_ip`,`user_id` FROM `{$db->return_DB_name()}`.`dt_cookie_info` WHERE `cookie_id` = '{$cookieId}'";
 								$query = $db->query($sql);
 								if(mysql_num_rows($query) > 0)	{
 									$result = mysql_fetch_object($query);
-									$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `user_id` = '0', `user_group` = '0', 'last_active_time' = '{$currentTime}', `login_status` = '0' WHERE `session_id` = '{$result->session_id}'";
-									$query = $db->query($sql);
+									if($currentTime - $result->last_active_time <= 604800)	{
+										if($currentIp == $result->create_ip && $currentBrowser == $result->user_agent)	{
+											//All clear.
+											$userId = $result->user_id;
+											$userGroup = get_usergroup_from_id($userId);
+											$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `user_id` = '{$userId}', `user_group` = '{$userGroup}', `last_active_time` = '{$currentTime}', `login_status` = '1' ";
+											$query = $db->query($sql);
+											$sql = "UPDATE `{$db->return_DB_name()}`.`dt_cookie_info` SET `last_active_time` = '{$currentTime}' WHERE `cookie_id` = '{$cookieId}'";
+											$query = $db->query($sql);
+											$this->userLoginStatus = TRUE;
+										} else {
+											//Wrong cookie.
+											setcookie('setcookie','',-10,'/');
+											$sql = "DELETE FROM `{$db->return_DB_name()}`.`dt_cookie_info` WHERE `cookie_id` = '{$cookieId}'";
+											$query = $db->query($sql);
+											$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `last_active_time` = '{$currentTime}'";
+											$query = $db->query($sql);
+											$this->userLoginStatus = FALSE;
+										}
+									} else {
+										//Cookie is long over due. Lets unset it.
+										setcookie('setcookie','',-10,'/');
+										$sql = "DELETE FROM `{$db->return_DB_name()}`.`dt_cookie_info` WHERE `cookie_id` = '{$cookieId}'";
+										$query = $db->query($sql);
+										$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `last_active_time` = '{$currentTime}'";
+										$query = $db->query($sql);
+										$this->userLoginStatus = FALSE;
+									}
 								} else {
-									//Seems no session was set. Let just make a new one.
-									$sql = "INSERT INTO `{$db->return_DB_name()}`.`dt_session_info`(`session_id`,`user_id`,`user_group`,`create_time`,`last_active_time`,`create_ip`,`login_status`) VALUES ('{$newSessionId}','0','0','{$currentTime}','{$currentTime}','{$userIp}','0')";
+									//No cookie is found in the DB. Lets unset it.
+									setcookie('setcookie','',-10,'/');
+									$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `last_active_time` = '{$currentTime}'";
 									$query = $db->query($sql);
+									$this->userLoginStatus = FALSE;
 								}
-								$this->userLoginStatus = FALSE;
-								$_SESSION['session_id'] = $newSessionId;
-								setcookie('cookie_id', '' , '-100', '/');
-							}
-						} else {
-							//The IP and user agent dont match. Unset cookie and check for session and modify it.
-							$sql = "SELECT `session_id` FROM `{$db->return_DB_name()}`.`dt_session_info` WHERE `user_id` = '{$userId}' AND `create_ip` = '{$cookieIp}'";
-							$query = $db->query($sql);
-							if(mysql_num_rows($query) > 0)	{
-								//A session for the user is there. Lets just unset stuff.
-								$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `user_id` = '0', `user_group` = '0', 'last_active_time' = '{$currentTime}', `login_status` = '0' WHERE `session_id` = '{$result->session_id}'";
-								$db->query($sql);
 							} else {
-								//no session set. Create a new blank session.
-								$sql = "INSERT INTO `{$db->return_DB_name()}`.`dt_session_info`(`session_id`,`user_id`,`user_group`,`create_time`,`last_active_time`,`create_ip`,`login_status`) VALUES ('{$newSessionId}','0','0','{$currentTime}','{$currentTime}','{$userIp}','0')";
+								//No cookie is set.
+								$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `last_active_time` = '{$currentTime}'";
 								$query = $db->query($sql);
+								$this->userLoginStatus = FALSE;
 							}
-							
-							$this->userLoginStatus = FALSE;
-							$_SESSION['session_id'] = $newSessionId;
-							setcookie('cookie_id', '' , '-100', '/');
 						}
 					} else {
-						//No entry found for the cookie. Unset it and create a blank session for the user.
-						setcookie('cookie_id', '' , '-100', '/');
-						$sql = "INSERT INTO `{$db->return_DB_name()}`.`dt_session_info`(`session_id`,`user_id`,`user_group`,`create_time`,`last_active_time`,`create_ip`,`login_status`) VALUES ('{$newSessionId}','0','0','{$currentTime}','{$currentTime}','{$userIp}','0')";
+						//The ip and browser dont match.
+						$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `user_id` = '0', `user_group` = '0', `last_active_time` = '{$currentTime}', `login_status` = '0'";
 						$query = $db->query($sql);
 						$this->userLoginStatus = FALSE;
-						$_SESSION['session_id'] = $newSessionId;
 					}
+				} else {
+					//Session is too old. Set a new one.
+					$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `user_id` = '0', `user_group` = '0', `last_active_time` = '{$currentTime}', `login_status` = '0'";
+					$query = $db->query($sql);
+					$this->userLoginStatus = FALSE;
 				}
 			} else {
-				//No session or anything is set. Lets make a new one
-				$sql = "INSERT INTO `{$db->return_DB_name()}`.`dt_session_info`(`session_id`,`user_id`,`user_group`,`create_time`,`last_active_time`,`create_ip`,`login_status`) VALUES ('{$newSessionId}', '0','0','{$currentTime}','{$currentTime}','{$userCurrentIp}', '0')";
+				//No session is found in the DB.
+				$sql = "INSERT INTO `{$db->return_DB_name()}`.`dt_session_info` (`session_id`,`user_id`,`user_group`,`create_time`,`last_active_time`,`create_ip`,`last_browser`,`login_status`) VALUES ('{$newSessionId}','0','0','{$currentTime}','{$currentTime}','{$currentIp}','{$currentBrowser}','0')";
 				$query = $db->query($sql);
-				$_SESSION['session_id'] = $newSessionId;
 				$this->userLoginStatus = FALSE;
 			}
-		}
-		
-		private function new_session_id()	{
-			//Lets generate a random 6 char long string sha1'ed, check it in db and then send it to them.
-			$stringToCrpyt = generateRandString(6);
-			$encrpytedString = sha1($stringToCrpyt);
-			
-			global $db;
-			
-			$sql = "SELECT `session_id` FROM `{$db->return_DB_name()}`.`dt_session_info` WHERE `session_id` = '{$encrpytedString}'";
-			$query = $db->query($sql);
-			
-			while(mysql_num_rows($query) > 0)	{
-				$stringToCrypt = generateRandString(6);
-				$encrpytedString = sha1($stringToCrpyt);
+		} else {
+			//NO session is set. Check if cookie is set and if it is then log them in
+			if($cookieSet == TRUE)	{
+				$cookieId = $_COOKIE['cookie_id'];
+				$sql = "SELECT `last_active_time`,`user_agent`,`create_ip`,`user_id` FROM `{$db->return_DB_name()}`.`dt_cookie_info` WHERE `cookie_id` = '{$cookieId}'";
 				$query = $db->query($sql);
+				if(mysql_num_rows($query) > 0)	{
+					//Checking time , IP, agent
+					$result = mysql_fetch_object($query);
+					if($currentTime - $result->last_active_time <= 604800)	{
+						if($result->create_ip == $currentIp && $result->user_agent == $currentBrowser)	{
+							//All Clear.
+							$userId = $result->user_id;
+							$userGroup = get_usergroup_from_id($userId);
+							$sql = "INSERT INTO `{$db->return_DB_name()}`.`dt_session_info` (`session_id`,`user_id`,`user_group`,`create_time`,`last_active_time`,`create_ip`,`last_browser`,`login_status`) VALUES ('{$newSessionId}','{$userId}','{$userGroup}','{$currentTime}','{$currentTime}','{$currentIp}','{$currentBrowser}','1')";
+							$query = $db->query($sql);
+							$sql = "UPDATE `{$db->return_DB_name()}`.`dt_cookie_info` SET `last_active_time` = '{$currentTime}' WHERE `cookie_id` = '{$cookieId}'";
+							$query = $db->query($sql);
+							$this->userLoginStatus = TRUE;
+						}
+					} else {
+						//Too Old.
+						setcookie('cookie_id','',-10,'/');
+						$sql = "DELETE FROM `{$db->return_DB_name()}`.`dt_cookie_info` WHERE `session_id` = '{$cookieId}'";
+						$query = $db->query($sql);
+						$sql = "INSERT INTO `{$db->return_DB_name()}`.`dt_session_info` (`session_id`,`user_id`,`user_group`,`create_time`,`last_active_time`,`create_ip`,`last_browser`,`login_status`) VALUES ('{$newSessionId}','0','0','{$currentTime}','{$currentTime}','{$currentIp}','{$currentBrowser}','0')";
+						$query = $db->query($sql);
+						$this->userLoginStatus = FALSE;
+					}
+				} else {
+					//Cookie is not in DB.
+					setcookie('cookie_id','',-10,'/');
+					$sql = "INSERT INTO `{$db->return_DB_name()}`.`dt_session_info` (`session_id`,`user_id`,`user_group`,`create_time`,`last_active_time`,`create_ip`,`last_browser`,`login_status`) VALUES ('{$newSessionId}','0','0','{$currentTime}','{$currentTime}','{$currentIp}','{$currentBrowser}','0')";
+					$query = $db->query($sql);
+					$this->userLoginStatus = FALSE;
+				}
 			}
-			return $encrpytedString;
 		}
+		$_SESSION['session_id'] = $newSessionId;
+	}
+	
+	private function new_session_id() {
+		//Lets generate a random 6 char long string sha1'ed, check it in db and then send it to them.
+		$stringToCrpyt = generateRandString(6);
+		$encrpytedString = sha1($stringToCrpyt);
 		
-		private function new_cookie_id()	{
-			//Same as the session id  but its 8 chars long and also md5's the sha1 string.
+		global $db;
+		
+		$sql = "SELECT `session_id` FROM `{$db->return_DB_name()}`.`dt_session_info` WHERE `session_id` = '{$encrpytedString}'";
+		$query = $db->query($sql);
+		
+		while(mysql_num_rows($query) > 0) {
+			$stringToCrypt = generateRandString(6);
+			$encrpytedString = sha1($stringToCrpyt);
+			$query = $db->query($sql);
+		}
+		return $encrpytedString;
+	}
+	
+	private function new_cookie_id() {
+		//Same as the session id but its 8 chars long and also md5's the sha1 string.
+		$stringToCrypt = generateRandString(8);
+		$encryptStr = md5(sha1($stringToCrypt));
+		
+		global $db;
+		
+		$sql = "SELECT `create_ip` FROM `{$db->return_DB_name()}`.`dt_cookie_info` WHERE `cookie_id` = '{$encryptStr}'";
+		$query = $db->query($sql);
+		
+		while(mysql_num_rows($query) > 0) {
 			$stringToCrypt = generateRandString(8);
 			$encryptStr = md5(sha1($stringToCrypt));
-			
-			global $db;
-			
-			$sql = "SELECT `create_ip` FROM `{$db->return_DB_name()}`.`dt_cookie_info` WHERE `cookie_id` = '{$encryptStr}'";
 			$query = $db->query($sql);
-			
-			while(mysql_num_rows($query) > 0)	{
-				$stringToCrypt = generateRandString(8);
-				$encryptStr = md5(sha1($stringToCrypt));
-				$query = $db->query($sql);
-			}
-			
-			return $encryptStr;
 		}
 		
-		public function return_user_login_status()	{
-			return $this->userLoginStatus;
-		}
-		
-		public function get_userId_from_session()	{
-			global $db;
-			$sessionId = $_SESSION['session_id'];
-			$sql = "SELECT `user_id` FROM `{$db->return_DB_name()}`.`dt_session_info` WHERE `session_id` = '{$sessionId}'";
-			$query = $db->query($sql);
-			$result = mysql_fetch_object($query);
-			return $result->user_id;
-			
-		}
-		
-		public function user_login($userId, $setCookie)	{
-			//Since we are updating the session data  we better change the session ID too.
-			global $db;
-			$userGroup = get_usergroup_from_id($userId);
-			$sessionId = $_SESSION['session_id'];
-			$newSessionId = $this->new_session_id();
-			$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `user_id` = '{$userId}', `user_group` = '{$userGroup}', `login_status` = '1' WHERE  `session_id` = '{$sessionId}'";
-			$query = $db->query($sql);
-			$_SESSION['session_id'] = $newSessionId;
-			
-			if($setCookie == 1)	{
-				//So the userneeds to set the cookie for a week. Lets set it up.
-				$browser = get_browser(null, true);
-				$userAgent = $browser['browser'];
-				$userIp = $_SERVER['REMOTE_ADDR'];
-				$cookieId = $this->new_cookie_id();
-				$currentTime = time();
-				$expireTime = $currentTime + 604800;
-				$sql = "INSERT INTO `{$db->return_DB_name()}`.`dt_cookie_info` (`set_time`,`user_agent`,`create_ip`,`cookie_id`,`user_id`) VALUES ('{$currentTime}','{$userAgent}','{$userIp}','{$cookieId}','{$userId}')";
-				$query = $db->query($sql);
-				setcookie('cookie_id', $cookieId, $expireTime, '/');
-			}
-		}
+		return $encryptStr;
 	}
+	
+	public function return_user_login_status() {
+		return $this->userLoginStatus;
+	}
+	
+	public function get_userId_from_session() {
+		global $db;
+		$sessionId = $_SESSION['session_id'];
+		$sql = "SELECT `user_id` FROM `{$db->return_DB_name()}`.`dt_session_info` WHERE `session_id` = '{$sessionId}'";
+		$query = $db->query($sql);
+		$result = mysql_fetch_object($query);
+		return $result->user_id;
+	
+	}
+	
+	public function user_login($userId, $setCookie) {
+		//Since we are updating the session data we better change the session ID too.
+		global $db;
+		$userGroup = get_usergroup_from_id($userId);
+		$sessionId = $_SESSION['session_id'];
+		$newSessionId = $this->new_session_id();
+		$sql = "UPDATE `{$db->return_DB_name()}`.`dt_session_info` SET `session_id` = '{$newSessionId}', `user_id` = '{$userId}', `user_group` = '{$userGroup}', `login_status` = '1' WHERE `session_id` = '{$sessionId}'";
+		$query = $db->query($sql);
+		$_SESSION['session_id'] = $newSessionId;
+		
+		if($setCookie == 1) {
+			//So the userneeds to set the cookie for a week. Lets set it up.
+			$browser = get_browser(null, true);
+			$userAgent = $browser['browser'];
+			$userIp = $_SERVER['REMOTE_ADDR'];
+			$cookieId = $this->new_cookie_id();
+			$currentTime = time();
+			$expireTime = $currentTime + 604800;
+			global $ROOT_PATH;
+			$sql = "INSERT INTO `{$db->return_DB_name()}`.`dt_cookie_info` (`set_time`,`last_active_time`,`user_agent`,`create_ip`,`cookie_id`,`user_id`) VALUES ('{$currentTime}','{$currentTime}','{$userAgent}','{$userIp}','{$cookieId}','{$userId}')";
+			$query = $db->query($sql);
+			setcookie('cookie_id', $cookieId, $expireTime, '/');
+			}
+	}
+}
 ?>
