@@ -11,7 +11,7 @@
 		
 		//The construct method will use the session class to get the userId and other stuff if they are set.
 		function __construct()	{
-			global $session;
+			global $session, $template;
 			if($session->return_user_login_status() == TRUE)	{
 				//The User is logged in. So we get the stuff from the session class.
 				$this->userId = $session->get_userId_from_session();
@@ -26,6 +26,7 @@
 				$result = mysql_fetch_object($query);
 				$this->userGroup = $result->config_value;
 			}
+			$template->set_template_var('USERGROUP', $this->userGroup);
 		}
 		
 		function log_user_in($username, $password, $setCookie)	{

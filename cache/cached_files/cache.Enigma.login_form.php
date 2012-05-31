@@ -26,7 +26,14 @@ This contains the nav bar icons to link to other pages
         <li> <a href ="index.php"> Index </a> </li>
         <li> <a href ="blog.php"> Blog </a> </li>
         <li> <a href ="projects.php"> Projects </a> </li>
+        <?php if(!$this->templateVars['USERLOGGEDIN'] ) { ?>
         <li> <a href ="login.php"> Login </a> </li>
+        <?php } else { ?>
+        <li> <a href="control.php"> Control Panel </a></li>
+        <?php } ?>
+        <?php if($this->templateVars['USERGROUP'] == '1' ) { ?>
+        <li> <a href="admin/index.php"> Admin Area </a></li>
+        <?php } ?>
     </ul>
 </div>
 
@@ -59,7 +66,7 @@ This contains the nav bar icons to link to other pages
     This page is the footer and the final template of the page.
 -->
 <div id="footer">
-    The Page Was Compiled on  12 : 25 : 38 20125 27-May-2012.
+    The Page Was Compiled on  19 : 18 : 02 20125 31-May-2012.
 </div>
 </body>
 </html>

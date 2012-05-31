@@ -1,7 +1,7 @@
 <?php
 	class cache	{
 		//This class takes care of all the caching jobs
-		//TODO finish this class.
+		//TODO Clean up the class
 		private $cachePath;
 		private $templateVars;
 		
