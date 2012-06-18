@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 17, 2012 at 04:24 PM
+-- Generation Time: Jun 18, 2012 at 04:46 AM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -19,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `deltatiger`
 --
-CREATE DATABASE `deltatiger` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `deltatiger`;
 
 -- --------------------------------------------------------
 
@@ -76,8 +74,10 @@ CREATE TABLE IF NOT EXISTS `dt_cache_info` (
 --
 
 INSERT INTO `dt_cache_info` (`cache_time`, `cache_page_name`) VALUES
-('1336712929', 'index'),
-('1337246753', 'login_form');
+('1339985032', 'index'),
+('1339985035', 'login_form'),
+('1338484408', 'blog'),
+('1338959216', 'admin_index');
 
 -- --------------------------------------------------------
 
@@ -107,18 +107,12 @@ INSERT INTO `dt_config` (`config_name`, `config_value`) VALUES
 
 CREATE TABLE IF NOT EXISTS `dt_cookie_info` (
   `set_time` text NOT NULL,
+  `last_active_time` int(11) NOT NULL,
   `user_agent` text NOT NULL,
   `create_ip` text NOT NULL,
   `cookie_id` text NOT NULL,
   `user_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `dt_cookie_info`
---
-
-INSERT INTO `dt_cookie_info` (`set_time`, `user_agent`, `create_ip`, `cookie_id`, `user_id`) VALUES
-('1337264629', 'Default Browser', '::1', '905538d3dffef17bcf7057f3d62014df', 101);
 
 -- --------------------------------------------------------
 
@@ -170,6 +164,7 @@ CREATE TABLE IF NOT EXISTS `dt_session_info` (
   `create_time` text NOT NULL,
   `last_active_time` int(15) NOT NULL,
   `create_ip` text NOT NULL,
+  `last_browser` text NOT NULL,
   `login_status` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -177,8 +172,13 @@ CREATE TABLE IF NOT EXISTS `dt_session_info` (
 -- Dumping data for table `dt_session_info`
 --
 
-INSERT INTO `dt_session_info` (`session_id`, `user_id`, `user_group`, `create_time`, `last_active_time`, `create_ip`, `login_status`) VALUES
-('0febc137bac4569ec22ebe662e3ad2e4e9755bbe', 101, 0, '1337264614', 1337264632, '::1', 1);
+INSERT INTO `dt_session_info` (`session_id`, `user_id`, `user_group`, `create_time`, `last_active_time`, `create_ip`, `last_browser`, `login_status`) VALUES
+('b6933970062aa0677e402dbc8653c5bad9168ac7', 0, 0, '1338484681', 1339987578, '::1', 'Firefox', 0),
+('b6933970062aa0677e402dbc8653c5bad9168ac7', 0, 0, '1338558402', 1339987578, '::1', 'Firefox', 0),
+('b6933970062aa0677e402dbc8653c5bad9168ac7', 0, 0, '1338729473', 1339987578, '::1', 'Firefox', 0),
+('b6933970062aa0677e402dbc8653c5bad9168ac7', 0, 0, '1338733857', 1339987578, '::1', 'Firefox', 0),
+('b6933970062aa0677e402dbc8653c5bad9168ac7', 0, 0, '1338959175', 1339987578, '::1', 'Firefox', 0),
+('b6933970062aa0677e402dbc8653c5bad9168ac7', 0, 0, '1339985035', 1339987578, '::1', 'Firefox', 0);
 
 -- --------------------------------------------------------
 
@@ -191,9 +191,16 @@ CREATE TABLE IF NOT EXISTS `dt_user_groups` (
   `group_id` int(4) NOT NULL AUTO_INCREMENT,
   `group_admin` int(4) NOT NULL,
   `group_color` text NOT NULL,
-  `group_perm_id` int(4) NOT NULL,
   PRIMARY KEY (`group_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `dt_user_groups`
+--
+
+INSERT INTO `dt_user_groups` (`group_name`, `group_id`, `group_admin`, `group_color`) VALUES
+('Admin', 1, 101, '#580000'),
+('Guest User', 2, 101, '#000000');
 
 -- --------------------------------------------------------
 
@@ -216,7 +223,7 @@ CREATE TABLE IF NOT EXISTS `dt_user_info` (
 --
 
 INSERT INTO `dt_user_info` (`user_id`, `username`, `username_clean`, `password`, `create_time`, `user_group`, `user_email`) VALUES
-(101, 'DeltaTiger', 'deltatiger', '20c6c8de8a68db4232e26b316dc4695204156354', '', 0, '');
+(101, 'DeltaTiger', 'deltatiger', '20c6c8de8a68db4232e26b316dc4695204156354', '', 1, 'srihare.gr@gmail.com');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
