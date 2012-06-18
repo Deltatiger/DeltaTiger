@@ -364,3 +364,13 @@ div.navbar a:hover,div.navbar a:active
 	padding-right: 10px;
     background-color: #FFFACD;
 }
+
+#adminLeftNavBar	{
+	width: 17%;
+	float: left;
+}
+
+#adminRightMainBar	{
+	width: 83%;
+	float: left;
+}
