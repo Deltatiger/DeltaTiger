@@ -57,7 +57,7 @@ This contains the nav bar icons to link to other pages
 			<input type = "checkbox" name="cookieset" id="login_cookie_set"/> Stay Logged In ?.
 		</div>
 		<div class="loginSubmit">
-			<input type="submit" value="Login" onClick="loginUser()" />
+			<input type="submit" value="Login" onClick="loginUser();" />
 		</div>
 	</div>
 </div>
@@ -66,7 +66,7 @@ This contains the nav bar icons to link to other pages
     This page is the footer and the final template of the page.
 -->
 <div id="footer">
-    The Page Was Compiled on  19 : 18 : 02 20125 31-May-2012.
+    The Page Was Compiled on  04 : 03 : 55 20126 18-Jun-2012.
 </div>
 </body>
 </html>
