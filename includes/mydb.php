@@ -32,6 +32,7 @@ class mydb {
     }
     
     public function returnDBName()	{
+    	//TODO remove this once all the code has been checked.
     	return $this->dbName;
     }
     

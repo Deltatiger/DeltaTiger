@@ -6,28 +6,55 @@
 	 */
 
 	include 'includes/common.php';
+	$templateName = 'projects';
+	$pageName = 'Projects - Home';
 	
+	//We see if any modifier is enables. IF so use it else dont.
 	if(isset($_GET['orderby']))	{
-		if($_GET['orderby'] == 'topr')	{
-			//So we sort them by order of rating sorted by desc
-			$sql = "SELECT `project_name`,`project_id`,`project_type`,`project_view_count`,`project_rating` FROM `{$db->returnDBName()}`.`dt_project_info` ORDER BY desc";
-			$query = $db->query($sql);
-			$projects = '';
-			if(mysql_num_rows($query) <= 0)	{
-				//No projects found. So lets tell them none was found.
-				$projects = 'No Projects Found';
-			} else {
-				$projects .= '<table class="project_table">';
-				while($result = mysql_fetch_object($query)){
-					$projects .= '<tr>';
-					$projects .= '<td class="project_name">'.$result->project_name.'</td>';
-					$projects .= '<td class="project_type">'.$result->project_type.'</td>';
-					$projects .= '<td class="project_view_count">'.$result->project_view_count.'</td>';
-					$projects .= '<td class="project_rating">'.$result->project_rating.'/5</td>';
-					$projects .= '</tr>';
-				}
-				$projects .= '</table>';
-			}
+		switch($_GET['orderby'])	{
+			case 'topr':
+				$orderBy = 'ORDER BY `project_rating` DESC';
+				break;
+			case 'topd':
+				$orderBy = 'ORDER BY `project_download_count` DESC';
+				break;
+			case 'ntopr':
+				$orderBy = 'ORDER BY `project_rating`';
+				break;
+			case 'ntopd':
+				$orderBy = 'ORDER BY `project_download_count`';
+				break;
+			case 'topv':
+				$orderBy = 'ORDER BY `project_view_count`';
+				break;
+			default:
+				$orderBy = '';
 		}
+	} else {
+		$orderBy = '';
 	}
+	
+	//Now lets get the actual projects from the DB
+	$sql = "SELECT `project_name`, `project_id`,`project_type`,`project_view_count`, `project_download_count`,`project_rating` FROM `{$db->return_DB_name()}`.`dt_project_info` {$orderBy}";
+	$query = $db->query($sql);
+	$projects = '';
+	if(mysql_num_rows($query) > 0)		{
+		$projects .= '<table class="project_table">';
+		while($result = mysql_fetch_object($query)){
+			$projects .= '<tr>';
+			$projects .= '<td class="project_name"><a href="viewporject.php?projectid='.$result->project_id.'>"'.$result->project_name.'</a></td>';
+			$projects .= '<td class="project_type">'.$result->project_type.'</td>';
+			$projects .= '<td class="project_view_count">'.$result->project_view_count.'</td>';
+			$projects .= '<td class="project_download_count">'.$results->project_download_count.'</td>';
+			$projects .= '<td class="project_rating">'.$result->project_rating.'/5</td>';
+			$projects .= '</tr>';
+		}
+		$projects .= '</table>';
+	} else {
+		$projects .= 'No Projects Found. Try Again Later';
+	}
+	
+	$template->set_template_var('PROJECTS', $projects);
+	
+	$template->set_page_template($templateName, $pageName);
 ?>
