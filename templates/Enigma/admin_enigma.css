@@ -13,18 +13,29 @@ root {
 	padding: 0px;
 }
 
+#header	{
+	width: 90%;
+	margin: auto;
+}
+
+body {
+	/* TODO fix this with a good background */
+}
+
 .navbar {
+	width: 90%;
     height: 35px;
     text-align: center;
-    background-image: url('/DeltaTiger/templates/Enigma/images/grad_navbar3.png');
+    background-image: url('/DeltaTiger/templates/Enigma/images/grad_anav2.png');
     background-repeat: repeat-x;
     font-size: 20px;
     font-family: "Verdana", Arial, sans-serif;
-    padding-left: 10%;
-    padding-top: 5px;
+    margin-bottom:0px;
+    margin: auto;
+    padding-left: 10px;
 }
 
-div.navbar ul{
+.navbar ul{
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -33,13 +44,18 @@ div.navbar ul{
 div.navbar li
 {
     float: left;
+    padding: 5px;
 }
 
 
-.body	{
-	
+.adminBody	{
+	width: 90%;
+	margin: auto;
 }
 
-.footer	{
-	
+#adminfooter	{
+	width: 90%;
+	margin: auto;
+	text-align: center;
+	margin-top: 25px;
 }

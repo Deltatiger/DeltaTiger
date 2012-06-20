@@ -10,15 +10,15 @@
 		<div id="header">
             <img src="/Deltatiger/templates/Enigma/images/logo.jpg" width =100% height = 150px />
         </div>
-<div id="navbar">
+<div class="navbar">
 	<ul>
-		<li> Admin - Index </li>
+		<li> Admin Index </li>
 		<li> Statistics </li>
 		<li> Portal </li>
 	</ul>
 </div>
 
-<div id="body">
+<div class="adminBody">
 		<div id="adminLeftNavBar">
 			This is the left nav bar.
 		</div>
@@ -30,8 +30,8 @@
 <!--
     This page is the footer and the final template of the page.
 -->
-<div id="footer">
-    The Page Was Compiled on  18 : 37 : 47 20126 19-Jun-2012.
+<div id="adminfooter">
+    The Page Was Compiled on  05 : 35 : 21 20126 20-Jun-2012.
 </div>
 </body>
 </html>
