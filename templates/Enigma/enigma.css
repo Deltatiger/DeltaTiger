@@ -213,6 +213,17 @@ div.navbar a:hover,div.navbar a:active
 }
 
 /*
+ * This is used for all the projects pages
+ */
+ 
+#projects	{
+	width: 100%;
+	text-align: center;
+	margin: auto;
+	padding: 10px;
+}
+
+/*
  *	This is for ViewBlogImage.php
  */
  

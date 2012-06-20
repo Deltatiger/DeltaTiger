@@ -37,13 +37,15 @@ This contains the nav bar icons to link to other pages
     </ul>
 </div>
 <div id="body">
-	<?php echo (isset($this->templateVars['PROJECTS'])) ? $this->templateVars['PROJECTS'] : ''; ?>
+	<div id="projects">
+		<?php echo (isset($this->templateVars['PROJECTS'])) ? $this->templateVars['PROJECTS'] : ''; ?>	
+	</div>
 </div>
 <!--
     This page is the footer and the final template of the page.
 -->
 <div id="footer">
-    The Page Was Compiled on  19 : 25 : 47 20126 19-Jun-2012.
+    The Page Was Compiled on  03 : 51 : 17 20126 20-Jun-2012.
 </div>
 </body>
 </html>
