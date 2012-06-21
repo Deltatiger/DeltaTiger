@@ -8,8 +8,8 @@
 	</head>
 	<body>
 		<div id="header">
-            <img src="/Deltatiger/templates/Enigma/images/logo.jpg" width =100% height = 150px />
-        </div>
+			<!-- TODO add a decent logo here. -->
+		</div>
 <div class="navbar">
 	<ul>
 		<li> Admin Index </li>
@@ -20,7 +20,16 @@
 
 <div class="adminBody">
 		<div id="adminLeftNavBar">
-			This is the left nav bar.
+			<div class="adminLeftNavSubBar">
+				<p class="aNavBarHead">
+					Testing Heading.
+				</p>
+				<ul>
+					<li> Testing1 </li>
+					<li> Testing 2</li>
+					<li> Testing 3 </li>
+				</ul>
+			</div>
 		</div>
 		<div id="adminRightMainBar">
 			This is the right main bar.
@@ -31,7 +40,7 @@
     This page is the footer and the final template of the page.
 -->
 <div id="adminfooter">
-    The Page Was Compiled on  05 : 35 : 21 20126 20-Jun-2012.
+    The Page Was Compiled on  04 : 34 : 06 20126 21-Jun-2012.
 </div>
 </body>
 </html>
