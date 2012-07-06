@@ -33,6 +33,7 @@ body    {
     padding-left: 20px;
     padding-top: 10px;
     background-color: #FFFACD;
+    min-height: 150px;
     border-left: 3px;
     border-left-color: black;
     border-left-style: solid;
