@@ -59,34 +59,14 @@ body {
 #adminLeftNavBar	{
 	width: 20%;
 	float: left;
+	padding-top: 30px;
 	background-image: url('/DeltaTiger/templates/Enigma/images/grad_body_bg1.png');
 }
 
-.adminLeftNavSubBar	{
-	width: 90%;
-	margin-top: 30px;
-	margin-left: 10px;
-	padding: 3px;
-	background-image: url('/DeltaTiger/templates/Enigma/images/leftnavbarbg.png');
-}
-
-.adminLeftNavSubBar ul {
-	margin: 10px;
-	padding: 4px;
-	list-style-type: none;
-}
-
-.aNavBarHead	{
-	text-size: 15px;
-    font-family: "Verdana", Arial, sans-serif;
-    font-weight: bold;
-    padding: 2px;
-}
-
 #adminRightMainBar	{
-	width: 75%;
+	width: 80%;
 	float: left;
-	margin-top: 30px;
+	padding-top: 30px;
 	background-image: url('/DeltaTiger/templates/Enigma/images/grad_body_bg1.png');
 }
 

@@ -20,19 +20,10 @@
 
 <div class="adminBody">
 		<div id="adminLeftNavBar">
-			<div class="adminLeftNavSubBar">
-				<p class="aNavBarHead">
-					Testing Heading.
-				</p>
-				<ul>
-					<li> Testing1 </li>
-					<li> Testing 2</li>
-					<li> Testing 3 </li>
-				</ul>
-			</div>
+			
 		</div>
 		<div id="adminRightMainBar">
-			This is the right main bar.
+		
 		</div>
 </div>
 
@@ -40,7 +31,7 @@
     This page is the footer and the final template of the page.
 -->
 <div id="adminfooter">
-    The Page Was Compiled on  14 : 15 : 25 20127 06-Jul-2012.
+    The Page Was Compiled on  19 : 05 : 19 20127 06-Jul-2012.
 </div>
 </body>
 </html>
