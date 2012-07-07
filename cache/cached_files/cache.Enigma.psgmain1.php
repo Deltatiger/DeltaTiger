@@ -20,19 +20,21 @@
 </div>
 
 <div class="adminBody">
-		<div id="adminLeftNavBar">
-			<!-- TODO Finsih there -->			
-		</div>
-		<div id="adminRightMainBar">
+	<div id="leftNavBar">
+		<p class="leftNavHeading">View</p>
+		<ul>
+			<li> <a href="psgmain.php?p=viewposts">View Posts</a></li>
+			<li> <a href="psgmain.php?p=viewstats">View Stats</a></li>
+		</ul>
 		
-		</div>
+		<p class="leftNavHeading">Admin </p>
+		<ul>
+			<li> <a href="psgmain.php?p=newpost">New Post</a></li>
+			<li> <a href="psgmain.php?p=newpost">New Mail</a></li>
+		</ul>
+	</div>
+	<div id="rightMainBar">
+	
+	</div>
 </div>
 
-<!--
-    This page is the footer and the final template of the page.
--->
-<div id="adminfooter">
-    The Page Was Compiled on  05 : 01 : 13 20127 07-Jul-2012.
-</div>
-</body>
-</html>
