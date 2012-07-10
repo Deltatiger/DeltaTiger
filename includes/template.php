@@ -33,7 +33,7 @@
 			$query = $db->query($sql);
 		}
 		
-		public function set_page_template($templateName , $pageTitle)	{
+		public function set_page_template($templateName , $pageTitle = "")	{
 			$this->set_template_var('TITLEHERE', $pageTitle);
 			//Now lets include the required page.
 			if($this->check_cache_validity($templateName) == 1)	{
