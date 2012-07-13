@@ -31,6 +31,37 @@
 				$content = "No Posts Found. Please Visit Again";
 			}
 			break;
+		case 'viewindposts':
+			$postId = $_GET['id'];
+			$sql = "SELECT `author`,`content_files`,`desc`,`title`,`time` FROM `{$db->return_DB_name()}`.`dt_psg_posts` WHERE `id` = '{$postId}'";
+			$query = $db->query($sql);
+			$content = '';
+			if(mysql_num_rows($query) > 0)	{
+				$result = mysql_Fetch_object($query);
+				$content .= '<table class="psgPostsView">';
+				$content .= '<tr> <th> Author Name </th> <td> '.get_username_from_id($result->author).'</td></tr>';
+				$content .= '<tr> <th> Title </th> <td>'.$result->title.'</td> </tr>';
+				$content .= '<tr> <th> Description </th> <td>'.$result->desc.'</td></tr>';
+				$content .= '<tr> <th> Time of Post </th> <td>'.$result->time.'</td> </tr>';
+				$content .= '</table>';
+				$content .= '<br /><p class="aNewPostHeading"> Content File Details </p>';
+				$content .= '<table class="psgPostsView">';
+				$content .= '<tr> <th> File Name </th> <th> File Size </th> <th> Download Link </th> <tr>';
+				$filePath = $filePath = $ROOT_PATH.'/psg/files/';
+				$contentFiles = explode(',' ,$result->content_files);
+				$fileSize = 0;
+				foreach($contentFiles as $file)	{
+					$file = trim($file);
+					$fileName = $filePath.$file;
+					$fileSize = round(filesize($fileName)/1024, 2);
+					$content .= '<tr> <td> '.$file.'</td><td> '.$fileSize.' KB </td> <td> <a href= "#"> Click Here </a> </td> </tr>';
+				}
+				$content .= '</table>';
+				
+			} else {
+				$content .= 'An Error Occured. We cant find that Post. Click here to report it.';
+			}
+			break;
 		case 'viewstats':
 			/*
 			 *	The stats that will be displayed here are: 

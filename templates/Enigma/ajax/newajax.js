@@ -8,6 +8,9 @@ $(document).ready(function()	{
 				//Another load over here.
 				var postId = $(this).data('test');
 				//TODO now we get the content from the db and display it properly.
+				$.get('/DeltaTiger/admin/ajax/psgview.php', {input : 'viewindposts', id : postId}, function(data)	{
+					$('#rightMainBar').html(data);
+				});
 			});
 		});
 	});
@@ -27,6 +30,11 @@ $(document).ready(function()	{
 				var currentCount = $('input[type="file"]').length;
 				var nextCount = currentCount + 1;
 				$('#newUploadHere').append('<input type="file" name="file_' + nextCount + '" />');
+			});
+			$('input[type="submit"]').click(function()	{
+				var postTilteLen = $('#postTitle').val();
+				var postDetailsLen = $('#postDetails').val();
+				alert(postTitleLen + ' ' + postDetailsLen);
 			});
 		});
 	});

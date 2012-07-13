@@ -5,13 +5,13 @@
 		Topic / Post Name :
 	</div>
 	<div class="aNewPostRightPane">
-		<input type="text" name="postTitle" />
+		<input type="text" name="postTitle" id="postTitle"/>
 	</div>
 	<div class="aNewPostLeftPane">
 		Topic / Post Details :
 	</div>
 	<div class="aNewPostRightPane">
-		<textarea rows="10" cols = "50"></textarea>
+		<textarea rows="10" cols = "50" id="postDetails"></textarea>
 	</div>
 	<div class="aNewPostCenterPane">
 		<!-- Upload field goes here -->
@@ -20,7 +20,7 @@
 		<a href="#" id="addMoreUpload" >Add More</a>
 	</div>
 	<div class="aNewPostSubmit">
-		<input type="submit" name="submitPost" value="Submit Post"/>
+		<input type="submit" name="submitPost" id="submitButton" value="Submit Post"/>
 	</div>
 	</form>
 </div>
