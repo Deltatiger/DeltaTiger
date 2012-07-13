@@ -67,7 +67,7 @@ This contains the nav bar icons to link to other pages
     This page is the footer and the final template of the page.
 -->
 <div id="footer">
-    The Page Was Compiled on  14 : 10 : 47 20127 06-Jul-2012.
+    The Page Was Compiled on  14 : 27 : 48 20127 13-Jul-2012.
 </div>
 </body>
 </html>

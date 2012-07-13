@@ -21,7 +21,7 @@
 				$content .= '<tr><th>Title </th> <th> Content-Count </th> <th> Author </th> <th> Time </th></tr>';
 				while($row = mysql_fetch_object($query))	{
 					$authorName = get_username_from_id($row->author);
-					$content .= '<tr> <td> <a href="#" id="aj_viewpost_id" data-test="'.$row->id.'">'.$row->title.'</a></td>';
+					$content .= '<tr> <td> <a href="#" class="aj_viewpost_id" data-test="'.$row->id.'">'.$row->title.'</a></td>';
 					$content .= '<td>'.$row->content_count.'</td>';
 					$content .= '<td>'.$authorName.'</td>';
 					$content .= '<td>'.$row->time.'</td></tr>';
@@ -47,16 +47,20 @@
 				$content .= '<br /><p class="aNewPostHeading"> Content File Details </p>';
 				$content .= '<table class="psgPostsView">';
 				$content .= '<tr> <th> File Name </th> <th> File Size </th> <th> Download Link </th> <tr>';
-				$filePath = $filePath = $ROOT_PATH.'/psg/files/';
+				$filePath = $filePath = $ROOT_PATH.'psg/files/';
 				$contentFiles = explode(',' ,$result->content_files);
 				$fileSize = 0;
 				foreach($contentFiles as $file)	{
+					if(strlen(trim($file)) <= 0)	{
+						break;
+					}
 					$file = trim($file);
 					$fileName = $filePath.$file;
 					$fileSize = round(filesize($fileName)/1024, 2);
-					$content .= '<tr> <td> '.$file.'</td><td> '.$fileSize.' KB </td> <td> <a href= "#"> Click Here </a> </td> </tr>';
+					$content .= '<tr> <td> '.$file.'</td><td> '.$fileSize.' KB </td> <td> <a href= "#" data-filename = "'.$file.'" class ="clickToDownload"> Click Here </a> </td> </tr>';
 				}
 				$content .= '</table>';
+				$content .= '<iframe id="secretIFrame" src="" style="display:none; visibility:hidden;"></iframe>';
 				
 			} else {
 				$content .= 'An Error Occured. We cant find that Post. Click here to report it.';
@@ -96,11 +100,7 @@
 			$content .= '</table>';
 			break;
 		case 'newpost':
-			$content = '';
-			//We give them some input fields and then store all the stuff they give.
-			$content .= '<p class="aNewPostHeading"> New Post </p>';
-			$content .= '<div class="aNewPostLeftPane"> Post Title </div>';
-			$content .= '<div class="aNewPostRightPane"> <input type="text" name="postTitle" /> </div>';
+			//We just may do something over here.
 			break;
 		case 'newmail':
 			break;

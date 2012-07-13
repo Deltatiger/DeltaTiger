@@ -261,6 +261,16 @@ div.navbar a:hover	{
 	height: 30px;
 }
 
+#aNewPostMsg	{
+	width: 80%;
+	text-align: left;
+	font-family: "Verdana", Arial, sans-serif;
+	font-size: 13px;
+	margin-top: 15px;
+	margin-left:auto;
+	margin-right: auto;
+}
+
 #adminfooter	{
 	clear: both;
 	width: 90%;
